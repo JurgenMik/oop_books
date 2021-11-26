@@ -4,7 +4,7 @@
 //console.log(book1);
 
 // object puhul kasutame for loopi
-
+//
 //for (let key in book){
 // console.log(key + " " + book[key])
 //}
