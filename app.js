@@ -1,47 +1,42 @@
-//const book1 = new Book('Tode', 'Tamm', '123456' );
-//const book2 = new Book('Naksitrallid', 'Maret', '123457' );
-
-//console.log(book1);
-
-// object puhul kasutame for loopi
-//
-//for (let key in book){
-// console.log(key + " " + book[key])
-//}
-
 // project objects
-
 const ui = new UI()
-const book = new Book()
+const ls = new LS()
 
 // event elements
-const form = document.querySelector('form');
+const form = document.querySelector('#book-form');
+const booksList = document.querySelector('#book-list');
 
-//events
+// events
 form.addEventListener('submit', addBook);
+document.addEventListener('DOMContentLoaded', getBooks);
 
-function addBook(event) {
+function getBooks(){
+    const books = ls.getData('books')
+    books.forEach(function (book){
+        ui.addBook(book)
+    })
+}
 
-    // vormi input
+function addBook(event){
+// get form input data
+    const titleInput = document.querySelector('#title');
+    const authorInput = document.querySelector('#author');
+    const isbnInput = document.querySelector('#isbn');
 
-    //const book = bookTitle.value;
-    //const author = bookAuthor.value;
-    //const isbn = bookIsbn.value;
+    let title = titleInput.value;
+    let author = authorInput.value;
+    let isbn = isbnInput.value;
 
-    // create <row> element ja sisesta vormi input.value row sisse as <td>
+    // create book by Book class
+    const book = new Book(title, author, isbn)
+    // add book by ui object addBook method
+    ui.addBook(book)
+    // add book by ls object addBook method
+    ls.addBook(book)
 
-    // create book, raamatu objekt | const book = new Book(title,author,isbn)
-    // for(let key in book) {} .createTextNode(book[key])
-
-    const book = new Book(title,author,isbn)
-    ui.addBook(book);
-
-
-    // Save input Book data to LocalStorage
-
-    addBookToLocalStorage(book,author,isbn);
-
+    titleInput.value = '';
+    authorInput.value = '';
+    isbnInput.value = '';
 
     event.preventDefault();
-
 }

@@ -1,25 +1,43 @@
 class UI{
+    // help function for DOM element creation
+    addUIElement(tagname, classname = '', textcontent = '', attributes = {}){
+        // create element
+        const element = document.createElement(tagname)
+        // set css class
+        if(classname !== ''){
+            element.className = classname
+        }
+        // set text content
+        let text = document.createTextNode(textcontent)
+        element.appendChild(text)
+        // attributes
+        if(Object.keys(attributes).length > 0){
+            for (let key in attributes) {
+                element.setAttribute(key, attributes[key])
+            }
+        }
+        return element
+    }
     addBook(book){
-
-        const bookTable = document.getElementById('myTable');
-        const row = bookTable.insertRow(1);
-
-        let cell1 = row.insertCell(0);
-        let cell22 = row.insertCell(1);
-        let cell3 = row.insertCell(2);
-
-        cell1.innerHTML = book;
-        cell2.innerHTML = author;
-        cell3.innerHTML = isbn;
-
-        // X link iga rowi peale
-
-        const link = document.createElement('a');
-
-        link.setAttribute('href', '#');
-
-        link.appendChild(document.createTextNode('X'))
-        row.appendChild(link);
-
+        // create <tr> element
+        const tr = this.addUIElement('tr');
+        for(let key in book){
+            // create <td> element
+            let td = this.addUIElement('td', '', book[key], {})
+            // add td to tr
+            tr.appendChild(td)
+        }
+        // X link
+        // create <td> element
+        let td = this.addUIElement('td')
+        // create <a> element
+        const link = this.addUIElement('a', '', 'X', {'href':'#'})
+        // add <a> to <li>
+        td.appendChild(link)
+        // add td to tr
+        tr.appendChild(td)
+        // add tr to tbody
+        const booksList = document.querySelector('#book-list')
+        booksList.appendChild(tr)
     }
 }
