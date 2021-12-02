@@ -1,21 +1,31 @@
-class LS{
-    getData(key){
-        let data
-        if(localStorage.getItem(key) === null){
-            data = []
+// Store Class: Handles Storage
+class ls {
+    static getBooks() {
+        let books;
+        if(localStorage.getItem('books') === null) {
+            books = [];
         } else {
-            data = JSON.parse(localStorage.getItem(key))
+            books = JSON.parse(localStorage.getItem('books'));
         }
-        return data
+
+        return books;
     }
 
-    setData(key, data){
-        localStorage.setItem(key, JSON.stringify(data))
+    static addBook(book) {
+        const books = ls.getBooks();
+        books.push(book);
+        localStorage.setItem('books', JSON.stringify(books));
     }
 
-    addBook(book){
-        let books = this.getData('books')
-        books.push(book)
-        this.setData('books', books)
+    static removeBook(isbn) {
+        const books = ls.getBooks();
+
+        books.forEach((book, index) => {
+            if(book.isbn === isbn) {
+                books.splice(index, 1);
+            }
+        });
+
+        localStorage.setItem('books', JSON.stringify(books));
     }
 }

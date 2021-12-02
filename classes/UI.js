@@ -1,43 +1,38 @@
-class UI{
-    // help function for DOM element creation
-    addUIElement(tagname, classname = '', textcontent = '', attributes = {}){
-        // create element
-        const element = document.createElement(tagname)
-        // set css class
-        if(classname !== ''){
-            element.className = classname
-        }
-        // set text content
-        let text = document.createTextNode(textcontent)
-        element.appendChild(text)
-        // attributes
-        if(Object.keys(attributes).length > 0){
-            for (let key in attributes) {
-                element.setAttribute(key, attributes[key])
-            }
-        }
-        return element
+// UI Class: Handle UI Tasks
+class UI {
+    static displayBooks() {
+        const books = ls.getBooks();
+
+        books.forEach((book) => UI.addBookToList(book));
     }
-    addBook(book){
-        // create <tr> element
-        const tr = this.addUIElement('tr');
-        for(let key in book){
-            // create <td> element
-            let td = this.addUIElement('td', '', book[key], {})
-            // add td to tr
-            tr.appendChild(td)
+
+    static addBookToList(book) {
+
+        const list = document.querySelector('#book-list');
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+      <td>${book.title}</td>
+      <td>${book.author}</td>
+      <td>${book.isbn}</td>
+      <td><a href="#" class="btn btn-danger btn-sm delete">X</a></td>
+    `;
+
+        list.appendChild(row);
+    }
+
+    static deleteBook(el) {
+        if(el.classList.contains('delete')) {
+            el.parentElement.parentElement.remove();
         }
-        // X link
-        // create <td> element
-        let td = this.addUIElement('td')
-        // create <a> element
-        const link = this.addUIElement('a', '', 'X', {'href':'#'})
-        // add <a> to <li>
-        td.appendChild(link)
-        // add td to tr
-        tr.appendChild(td)
-        // add tr to tbody
-        const booksList = document.querySelector('#book-list')
-        booksList.appendChild(tr)
+    }
+
+    static clearFields() {
+        document.querySelector('#title').value = '';
+        document.querySelector('#author').value = '';
+        document.querySelector('#isbn').value = '';
     }
 }
+
+
+

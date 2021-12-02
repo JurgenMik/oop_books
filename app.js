@@ -1,42 +1,49 @@
-// project objects
-const ui = new UI()
-const ls = new LS()
 
-// event elements
-const form = document.querySelector('#book-form');
-const booksList = document.querySelector('#book-list');
+// Event: Display Books
+document.addEventListener('DOMContentLoaded', UI.displayBooks);
 
-// events
-form.addEventListener('submit', addBook);
-document.addEventListener('DOMContentLoaded', getBooks);
+// Event: Add a Book
+document.querySelector('#book-form').addEventListener('submit', (e) => {
+    // Prevent actual submit
+    e.preventDefault();
 
-function getBooks(){
-    const books = ls.getData('books')
-    books.forEach(function (book){
-        ui.addBook(book)
-    })
-}
+    // Get form values
+    const title = document.querySelector('#title').value;
+    const author = document.querySelector('#author').value;
+    const isbn = document.querySelector('#isbn').value;
 
-function addBook(event){
-// get form input data
-    const titleInput = document.querySelector('#title');
-    const authorInput = document.querySelector('#author');
-    const isbnInput = document.querySelector('#isbn');
+    // Validate
+    if(title === '' || author === '' || isbn === '') {
 
-    let title = titleInput.value;
-    let author = authorInput.value;
-    let isbn = isbnInput.value;
+        alert('Please fill in all fields', 'danger');
 
-    // create book by Book class
-    const book = new Book(title, author, isbn)
-    // add book by ui object addBook method
-    ui.addBook(book)
-    // add book by ls object addBook method
-    ls.addBook(book)
+    } else {
+        // Instatiate book
+        const book = new Book(title, author, isbn);
 
-    titleInput.value = '';
-    authorInput.value = '';
-    isbnInput.value = '';
+        // Add Book to UI
+        UI.addBookToList(book);
 
-    event.preventDefault();
-}
+        // Add book to store
+        ls.addBook(book);
+
+        // Clear fields
+        UI.clearFields();
+    }
+});
+
+// Event: Remove a Book
+document.querySelector('#book-list').addEventListener('click', (e) => {
+    // Remove book from UI
+    UI.deleteBook(e.target);
+
+    // Remove book from store
+    ls.removeBook(e.target.parentElement.previousElementSibling.textContent);
+
+});
+
+
+
+
+
+
